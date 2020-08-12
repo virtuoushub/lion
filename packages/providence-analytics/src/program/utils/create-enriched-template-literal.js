@@ -1,5 +1,5 @@
-const { traverseHtml } = require('providence-analytics');
 const { parse5 } = require('parse5');
+const { traverseHtml } = require('./traverse-html.js');
 
 const PLACEHOLDER = '{{}}';
 
