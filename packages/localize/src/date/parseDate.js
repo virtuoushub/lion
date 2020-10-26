@@ -53,10 +53,11 @@ export function parseDate(dateString) {
     default:
       parsedString = '0000/00/00';
   }
+
   const parsedDate = new Date(parsedString);
-  // Check if parsedDate is not `Invalid Date`
+  // Check if parsedDate is not `Invalid Date` or that the date has changed (e.g. the not existing 31.02.2020)
   // eslint-disable-next-line no-restricted-globals
-  if (!isNaN(parsedDate.getTime())) {
+  if (!isNaN(parsedDate.getTime()) && parsedDate.getDate() === Number(parsedString.slice(8, 10))) {
     return parsedDate;
   }
   return undefined;
