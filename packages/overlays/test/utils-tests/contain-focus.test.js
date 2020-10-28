@@ -1,4 +1,4 @@
-import { expect, fixture, html } from '@open-wc/testing';
+import { aTimeout, expect, fixture, html } from '@open-wc/testing';
 // @ts-expect-error
 import { renderLitAsNode } from '@lion/helpers';
 import { getDeepActiveElement } from '../../src/utils/get-deep-active-element.js';
@@ -144,6 +144,25 @@ describe('containFocus()', () => {
      * to the first element.
      */
     expect(getDeepActiveElement()).to.equal(focusableElements[2]);
+
+    disconnect();
+  });
+
+  it.only('on click outside where focusin never happens but focusout does, also make sure to return focus to root element', async () => {
+    await fixture(lightDomTemplate);
+    const root = /** @type {HTMLElement} */ (document.getElementById('rootElement'));
+    const focusableElements = getFocusableElements(root);
+    const { disconnect } = containFocus(root);
+
+    focusableElements[2].focus();
+
+    await aTimeout(50);
+
+    console.log('body click');
+    document.body.focus();
+    console.log(document.activeElement);
+
+    expect(getDeepActiveElement()).to.equal(root);
 
     disconnect();
   });
